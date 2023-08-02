@@ -1,7 +1,7 @@
 %{
 #INFORMATION PROCESSING IN AUTONOMOUS SYSTEMS#
 #Written by: Yarin Hausler#
-#Last update: 31.07.2023#
+#Last update: 02.08.2023#
 %}
 clc
 clear all
@@ -27,7 +27,7 @@ EndY = input('Final y coordinate(0-10): '); % User choise: Final y coordinate
 %Nb = 10;                                     % Number of beacons
 Nb = input('Number of beacons: ');            % User choise: Number of beacons
 beacon_coords = rand(Nb, 2) .* [EndX, EndY];  % Randomly generate beacon coordinates
-
+ 
 % Generate agent's trajectory as a straight line from (StartX,StartY) to (EndX,EndY)
 agent_trajectory = [linspace(StartX, EndX, sim_time / dt + 1)', linspace(StartY, EndY, sim_time / dt + 1)'];
 
@@ -64,7 +64,7 @@ for t = 1:size(agent_trajectory, 1)
         ESS = 1 / sum(weights.^2);
         
         % Adaptive Particle Filtering: Adjust the number of particles
-        if ESS < N / 2  % Adjust this threshold as needed
+        if ESS < N / 2  % Can be adjusted
             % Resample to increase the number of particles
             resampled_indices = randsample(1:N, N, true, weights);
             particles = particles(resampled_indices, :);
@@ -72,7 +72,7 @@ for t = 1:size(agent_trajectory, 1)
         end
 
     elseif adaptive_filter == 0
-        %#Regular process#
+        %#Adaptive process#
         % Resampling Step (Systematic Resampling)
         cumulative_weights = cumsum(weights);
         u = (rand + (0:N-1))' / N;
